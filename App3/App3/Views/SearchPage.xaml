@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.SearchPage">
+    <StackLayout VerticalOptions="FillAndExpand">
+
+        <Entry x:Name="Entry_Search"
+                Placeholder="Search..."
+                TextChanged="Search_TextChanged"
+                FontSize="Large" />
+
+        <ListView x:Name="ListView_banks" ItemTapped="ListView_banks_ItemTapped"  />
+    </StackLayout>
+</ContentPage>

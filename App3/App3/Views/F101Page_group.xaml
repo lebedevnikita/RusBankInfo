@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.F101Page_group"
+             xmlns:converters ="clr-namespace:App3.CS">
+    
+
+
+        <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="slice"   Order="Primary" Priority="1"  Clicked="Tbi_slice" ></ToolbarItem>
+        <ToolbarItem ClassId="Item1"  Text="Входящие остатки"  Order="Secondary" Priority="1"  Clicked="Clicked_getF101_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item2"  Text="Обороты по дебету" Order="Secondary" Priority="2"  Clicked="Clicked_getF101_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item3"  Text="Обороты по кредиту" Order="Secondary" Priority="3" Clicked="Clicked_getF101_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item4"  Text="Исходящие остатки" Order="Secondary" Priority="4"  Clicked="Clicked_getF101_data" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Resources>
+        <StyleSheet Source="/appStyles.css" />
+
+        <ResourceDictionary>
+            <converters:converter_ap x:Key="iconverter_ap"/>
+            <converters:converter_numbers x:Key="converter_numbers"/>
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+    
+    <ContentPage.Title  >
+        <x:String >Ф101</x:String>
+    </ContentPage.Title>
+
+
+
+
+    <StackLayout  >
+        <SearchBar x:Name="SearchBar1" Placeholder="Наименование банка" TextChanged="SearchBar1_OnTextChanged"   ></SearchBar>
+        <ListView x:Name="ListView_SearchBar1" IsPullToRefreshEnabled="True"  ItemTapped="ListView_SearchBar1_ItemTapped"  />
+        <ListView x:Name="ListView_slice" IsPullToRefreshEnabled="True"  ItemTapped="ListView_slice_ItemTapped"  />
+
+        <Grid x:Name="Grid_f101_header">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"  />
+                <RowDefinition Height="20"  />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Label  x:Name="Label2_bankname" Grid.Column="0"  Grid.Row="0"   Grid.ColumnSpan="3">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="search_tap"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label  Text="Динамика" Grid.Column="3" Grid.Row="0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="lb_dynamic_clicked"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="Label1_tip" Grid.Column="0"  Grid.Row="1"   Grid.ColumnSpan="3" />
+            <Label Grid.Column="0"  Grid.Row="2" Text="Номер счета"  />
+            <Label Grid.Column="1"  Grid.Row="2" Text="в рублях" />
+            <Label Grid.Column="2"  Grid.Row="2" Text="ин. вал., драг. металлы" />
+            <Label Grid.Column="3"  Grid.Row="2" Text="итого" />
+        </Grid>
+        
+        <ListView x:Name="lw"   
+                  
+            SelectionMode="None" 
+            SeparatorColor="Transparent"
+            ItemsSource="{Binding F101_groups}  "
+            ItemTapped="grid_item_tapped"
+            IsGroupingEnabled="True">
+
+
+            <ListView.GroupHeaderTemplate >
+
+                <DataTemplate>
+                    <ViewCell Height="40" >
+                        <StackLayout>
+                            <Label Text="{Binding Name ,StringFormat='Книга {0:F0}'}"  FontSize="Large"   />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+
+
+
+
+            <ListView.ItemTemplate  >
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid x:Name="Grid_f101">
+
+                            <Grid.ColumnDefinitions >
+                                <ColumnDefinition Width="4*"   />
+                                <ColumnDefinition Width="4*"   />
+                                <ColumnDefinition Width="4*"   />
+                                <ColumnDefinition Width="4*"   />
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label x:Name="col1" Grid.Column="0"  Text="{Binding ap, Converter={StaticResource iconverter_ap}}"   />
+                            <Label x:Name="col2" Grid.Column="1"  Text="{Binding col_1, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"    />
+                            <Label x:Name="col3" Grid.Column="2"  Text="{Binding col_2, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"    />
+                            <Label x:Name="col4" Grid.Column="3"  Text="{Binding col_3, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"   />
+
+                        </Grid>
+                     
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+
+
+
+
+
+
+
+
+
+
+
+    </StackLayout>
+
+
+</ContentPage>

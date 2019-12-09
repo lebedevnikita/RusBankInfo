@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.SearchPage2">
+    <StackLayout VerticalOptions="FillAndExpand">
+
+        <SearchBar x:Name="SearchBar1"  Placeholder="Zoeken..." TextChanged="SearchBar_OnTextChanged"></SearchBar>
+
+        <ListView IsPullToRefreshEnabled="True" x:Name="ListView_banks" ItemTapped="ListView_banks_ItemTapped"  />
+
+
+
+        <!--<ListView IsPullToRefreshEnabled="True" Refreshing="EmployeeListView_OnRefreshing" ItemTapped="EmployeeListView_OnItemTapped" x:Name="EmployeeListView">-->
+
+
+    </StackLayout>
+</ContentPage>

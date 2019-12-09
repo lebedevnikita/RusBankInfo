@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.F101_actives_page"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="tbi_date_slice"  Order="Primary" Priority="1" Clicked="Tbi_Clicked1" ></ToolbarItem>
+        <ToolbarItem x:Name="tbi_topN30" Text="Топ30" Order="Secondary" Priority="1" Clicked="tbi_topN30_Clicked" ></ToolbarItem>
+        <ToolbarItem x:Name="tbi_topN100" Text="Топ100" Order="Secondary" Priority="2" Clicked="tbi_topN100_Clicked" ></ToolbarItem>
+        <ToolbarItem x:Name="tbi_topN200" Text="Топ200" Order="Secondary" Priority="3" Clicked="tbi_topN200_Clicked" ></ToolbarItem>
+        
+    </ContentPage.ToolbarItems>
+
+
+
+
+    <ScrollView>
+    
+ 
+            <Grid x:Name="Grid_F101_actives_page">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+          
+        </Grid>
+
+
+         
+         
+         
+         
+    </ScrollView>
+
+
+</ContentPage>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.F101Page_dynamic"
+              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             >
+    <ContentPage.Title  >
+        <x:String >Ф101 РФ</x:String>
+
+    </ContentPage.Title>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Item1" Text="Входящие остатки"  Order="Secondary" Priority="1"   ></ToolbarItem>
+        <ToolbarItem x:Name="Item2" Text="Обороты по дебету" Order="Secondary" Priority="2"   ></ToolbarItem>
+        <ToolbarItem x:Name="Item3" Text="Обороты по кредиту" Order="Secondary" Priority="3"  ></ToolbarItem>
+        <ToolbarItem x:Name="Item4" Text="Исходящие остатки" Order="Secondary" Priority="4"   ></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <StackLayout  >
+        <Grid x:Name="Grid_f101_header">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+     
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"  />
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Column="0"  Grid.Row="0" Text="1"  />
+            <Label Grid.Column="1"  Grid.Row="0" Text="2" />
+            <Label Grid.Column="2"  Grid.Row="0" Text="3" />
+            <Label Grid.Column="3"  Grid.Row="0" Text="4" />
+            <Label Grid.Column="4"  Grid.Row="0" Text="5" />
+        </Grid>
+
+
+
+
+
+
+
+
+
+
+        <ListView x:Name="lw_f101_dynamic"  >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid x:Name="Grid_f101_dynamic"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="5*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0"   Text="{Binding IndCode}" />
+                            <Label Grid.Column="1"   Text="{Binding col_2}" Rotation="-90"/>
+                            <microcharts:ChartView Grid.Column="2"   Chart="{Binding linechart}" />
+                            <Label Grid.Column="3"   Text="{Binding col_4}" Rotation="-90"/>
+                            <Label Grid.Column="4"   Text="{Binding col_5}" />
+                        </Grid>
+
+                    </ViewCell>
+
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+    </StackLayout>
+</ContentPage>
+

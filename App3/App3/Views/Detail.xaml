@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App3.Views.Detail"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             Title ="RusBanksInfo"
+             BackgroundColor="Azure"
+             >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="search"  Order="Primary" Priority="1" Icon="search.png" Clicked="Tbi_search" ></ToolbarItem>
+
+
+    </ContentPage.ToolbarItems>
+    
+    
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <BoxView  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"  />
+        <BoxView  Grid.Column="1" Grid.Row="1"/>
+        <BoxView  Grid.Column="0" Grid.Row="1"  />
+
+        <StackLayout Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
+            <Label Text="Банковская система РФ"/>
+
+            <microcharts:ChartView x:Name="ChartView_chart1" 
+                                   HeightRequest="300"/>
+        </StackLayout>
+
+        <StackLayout Grid.Column="0" Grid.Row="1">
+            <Label   x:Name="lbltop30_actives"  Text="Tоп 30: Активы (млрд.руб) ">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="lbltop30_actives_clicked"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <ListView x:Name="ListView_top30_actives" ItemTapped="ListView_top30_actives_ItemTapped"  />
+        </StackLayout>
+
+        <StackLayout Grid.Column="1" Grid.Row="1">
+            <Label x:Name="lbltop30_passives" Text="Tоп 30: Пассивы (млрд.руб) ">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="lbltop30_passives_clicked"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <ListView x:Name="ListView_top30_passives" ItemTapped="ListView_top30_passives_ItemTapped" />
+        </StackLayout>
+        
+
+        
+    </Grid>
+
+
+
+</ContentPage>

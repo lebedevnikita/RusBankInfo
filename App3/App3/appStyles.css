@@ -1,0 +1,33 @@
+﻿^contentpage {
+    background-color: #333333;
+}
+
+stacklayout {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    color: white;
+    font-size: medium;
+}
+
+ListView {
+    background-color: #333333;
+    font-size: small;
+}
+
+
+
+Grid {
+    background-color: #333333;
+    margin-bottom: 1;
+    margin-top: 1;
+    font-size: small;
+}
+
+
+#col1, #col2, #col3, #col4 {
+    color: white;
+    font-size: small;
+}
