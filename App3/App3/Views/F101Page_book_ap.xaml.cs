@@ -22,7 +22,7 @@ namespace App3.Views
 
         List<t_dates> datesList = new List<t_dates>();
         List<string> DL = new List<string>();
-
+        public string filtered_bankname = "0";
         public int tip = 4;
         public string str ="0" ;
         string dt_slice;
@@ -84,6 +84,8 @@ namespace App3.Views
                 hf.Name_Part = field_value;
                 Binding bindingLabel1_tip = new Binding { Source = hf, Path = name_field };
                 field.SetBinding(Label.TextProperty, bindingLabel1_tip);
+
+                //filtered_bankname = field_value;
         }
 
 
@@ -106,6 +108,7 @@ namespace App3.Views
 
         public async void F101_data(string pln, string ap,int tip, string str, string dt_from, string dt_to)
         {
+            
             GetF101_data_List.Clear();
             GetF101_data_List = await myAPI.GetF101_groups("group_to_Pln_Ap_IndCode"+ pln + ap, tip, str, dt_from, dt_to);
             GetF101_data_List = GetF101_data_List.OrderBy(order => order.IndCode).ToList();
@@ -167,20 +170,23 @@ namespace App3.Views
 
 
 
-        private void ListView_SearchBar1_ItemTapped(object sender, ItemTappedEventArgs e)
+        private  void ListView_SearchBar1_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+
             SearchBar1.IsVisible = false;
+         
             ListView_SearchBar1.IsVisible = false;
             Grid_f101_header.IsVisible = true;
             lw.IsVisible = true;
-
             var b = bankinfos.Find(x => x.ShortName == e.Item.ToString());
             str = b.RegNumber.ToString();
 
+            filtered_bankname = b.ShortName.ToString();
             Getregn_info("bankinfo", "anyvalue", str);
+           
             F101_data(_pln, _ap, tip, str, dt_slice, dt_slice);
             Header_fieds_change(Label2_bankname, "Name_Part", b.ShortName);
-
+            //DisplayAlert("Уведомление", _pln+"/"+ _ap + "/"+ tip.ToString() + "/"+ str + "/"+ dt_slice, "ОK");
         }
 
 
@@ -320,7 +326,7 @@ namespace App3.Views
             t_application_F101_allbanks selectedRow = e.Item as t_application_F101_allbanks;
             if (selectedRow != null)
                 // await DisplayAlert(selectedRow.ap.ToString(), selectedRow.pln.ToString() , "OK");
-                await App.MasterDetail.Detail.Navigation.PushAsync(new F101Page_byIndCode(tip, selectedRow.IndCode.ToString(),  datesList.First().dt));
+                await App.MasterDetail.Detail.Navigation.PushAsync(new F101Page_byIndCode(tip, selectedRow.IndCode.ToString(),  datesList.First().dt, filtered_bankname));
 
             ((ListView)sender).SelectedItem = null;
         }

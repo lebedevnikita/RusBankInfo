@@ -25,7 +25,7 @@
     </ContentPage.ToolbarItems>
 
     <ContentPage.Title  >
-        <x:String >Ф101</x:String>
+        <x:String >book_ap</x:String>
     </ContentPage.Title>
 
     <StackLayout  >

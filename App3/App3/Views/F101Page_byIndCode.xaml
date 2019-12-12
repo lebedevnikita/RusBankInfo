@@ -33,7 +33,7 @@
 
 
     <ContentPage.Title  >
-        <x:String >Ф101</x:String>
+        <x:String >F101Page_byIndCode</x:String>
     </ContentPage.Title>
 
     <StackLayout  >

@@ -18,6 +18,7 @@ namespace App3.Views
 	{
         Interface.IMyAPI myAPI = RestService.For<IMyAPI>("http://85.119.146.226/first/api");
         List<t_application_F101_allbanks> GetF101_data_List = new List<t_application_F101_allbanks>();
+        List<t_application_F101_allbanks> GetF101_data_List_search_bar_filterd = new List<t_application_F101_allbanks>();
         List<BankInfo> bankinfos = new List<BankInfo>();
 
         List<t_dates> datesList = new List<t_dates>();
@@ -25,24 +26,29 @@ namespace App3.Views
 
         public int tip;
         public string str ="0" ;
+        public string indCode = "0";
+        public string filtered_bankname = "0";
         string dt_slice;
 
-        public F101Page_byIndCode(int _tip, string indCode, string dt_sl)
+        public F101Page_byIndCode(int _tip, string _indCode, string dt_sl,string _filtered_bankname)
         {
 
             InitializeComponent();
-
+            DisplayAlert("Уведомление", _filtered_bankname, "ОK");
             Get_dates();
             tip = _tip;
+            indCode = _indCode;
+            filtered_bankname = _filtered_bankname;
+            Getregn_info("bankinfo", "anyvalue", "0");
 
 
-        Getregn_info("bankinfo", "anyvalue", "0");
-            F101_data(tip, indCode, dt_sl, dt_sl);
+            F101_data(tip, indCode, dt_sl, dt_sl, filtered_bankname);
 
             SearchBar1.IsVisible = false;
             ListView_SearchBar1.IsVisible = false;
             ListView_slice.IsVisible = false;
             Header_fieds_change(Label1_tip, "Name_Part", "Исходящие остатки");
+            Header_fieds_change(Label2_bankname, "Name_Part", filtered_bankname);
 
         }
 
@@ -98,12 +104,27 @@ namespace App3.Views
         }
 
 
-        public async void F101_data(int tip, string str, string dt_from, string dt_to)
+        public async void F101_data(int tip, string str, string dt_from, string dt_to , string filtered_bankname)
         {
             GetF101_data_List.Clear();
-            GetF101_data_List = await myAPI.GetF101_data("IndCode", tip, str,  dt_from,  dt_to);
-            GetF101_data_List = GetF101_data_List.OrderBy(order => order.IndCode).ToList();
-            lw.ItemsSource = GetF101_data_List;
+            GetF101_data_List_search_bar_filterd.Clear();
+
+            GetF101_data_List = await myAPI.GetF101_data("IndCode", tip, indCode,  dt_from,  dt_to);
+            GetF101_data_List = GetF101_data_List.OrderBy(order => order.col_3).Reverse().ToList();
+
+            if (filtered_bankname != "0" & filtered_bankname != "БАНКОВСКАЯ СИСТЕМА РФ")
+            {
+                //DisplayAlert("Уведомление", filtered_bankname, "ОK");
+                GetF101_data_List_search_bar_filterd = GetF101_data_List.Where(x => x.regn == filtered_bankname).ToList();
+                lw.ItemsSource = GetF101_data_List_search_bar_filterd;
+            }
+            else {
+                lw.ItemsSource = GetF101_data_List;
+            }
+ 
+
+
+           // lw.ItemsSource = GetF101_data_List;
 
         }
 
@@ -138,7 +159,7 @@ namespace App3.Views
            // DisplayAlert("Уведомление", tip.ToString(), "ОK");
 
             
-            F101_data(tip, str, dt_slice, dt_slice);
+            F101_data(tip, indCode, dt_slice, dt_slice, filtered_bankname);
             Header_fieds_change(Label1_tip, "Name_Part", item.Text);
            
         }
@@ -169,11 +190,31 @@ namespace App3.Views
             lw.IsVisible = true;
 
             var b = bankinfos.Find(x => x.ShortName == e.Item.ToString());
-            str = b.RegNumber.ToString();
+            filtered_bankname  = b.ShortName.ToString();
 
-            Getregn_info("bankinfo", "anyvalue", str);
-            F101_data(tip, str, dt_slice, dt_slice);
+            // Getregn_info("bankinfo", "anyvalue", str);
+
+            //GetF101_data_List_search_bar_filterd.Clear();
+            //GetF101_data_List_search_bar_filterd =GetF101_data_List.Where(x => x.regn == filtered_bankname).ToList();
+
+            
+          //  lw.ItemsSource = GetF101_data_List_search_bar_filterd;
+            // F101_data(tip, str, dt_slice, dt_slice);
+           
+
+            if(filtered_bankname != "0" & filtered_bankname != "БАНКОВСКАЯ СИСТЕМА РФ")
+            {
+                //DisplayAlert("Уведомление", filtered_bankname, "ОK");
+                GetF101_data_List_search_bar_filterd = GetF101_data_List.Where(x => x.regn == filtered_bankname).ToList();
+                lw.ItemsSource = GetF101_data_List_search_bar_filterd;
+            }
+            else {
+                lw.ItemsSource = GetF101_data_List;
+            }
+
             Header_fieds_change(Label2_bankname, "Name_Part", b.ShortName);
+
+
 
         }
 
@@ -273,7 +314,7 @@ namespace App3.Views
 
 
 
-            F101_data(tip, str, dt_slice, dt_slice);
+            F101_data(tip, indCode, dt_slice, dt_slice, filtered_bankname);
 
 
 
