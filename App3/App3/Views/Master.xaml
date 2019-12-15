@@ -12,7 +12,7 @@
         <Button x:Name="bt_101f" Text="101 форма" />
         <Button x:Name="bt_102f" Text="102 форма" />
         <Button x:Name="bt_search" Image="search.png" />
-
+        <Button x:Name="Charts_JS" Text="Charts JS" />
     </StackLayout>  
                 
 </ContentPage>

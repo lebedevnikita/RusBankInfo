@@ -67,6 +67,22 @@ namespace App3.Views
 
             };
 
+
+
+            Charts_JS.Clicked += async (sender, e) =>
+            {
+
+                App.MasterDetail.IsPresented = false;
+               
+                await App.MasterDetail.Detail.Navigation.PushAsync(new Page12());
+
+
+
+
+            };
+
+
+
         }
 	}
 }

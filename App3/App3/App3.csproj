@@ -41,6 +41,9 @@
     <Compile Update="Views\F101Page_dynamic.xaml.cs">
       <DependentUpon>F101Page_dynamic.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Page12.xaml.cs">
+      <DependentUpon>Page12.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SearchPage2.xaml.cs">
       <DependentUpon>SearchPage2.xaml</DependentUpon>
     </Compile>
@@ -69,6 +72,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\F101_passives_page.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Page12.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SearchPage.xaml">
