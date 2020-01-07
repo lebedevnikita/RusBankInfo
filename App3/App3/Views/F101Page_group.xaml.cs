@@ -37,6 +37,8 @@ namespace App3.Views
         public F101Page_group(string regn_bank, string dt_sl)
         {
             InitializeComponent();
+
+            
             Get_dates();
 
 

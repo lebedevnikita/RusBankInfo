@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App3.Views.F101Page_book_ap"
-             xmlns:converters ="clr-namespace:App3.CS">
+             xmlns:converters ="clr-namespace:App3.CS"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             >
     <ContentPage.Resources>
         <ResourceDictionary>
 
@@ -33,6 +35,34 @@
         <ListView x:Name="ListView_SearchBar1" IsPullToRefreshEnabled="True"  ItemTapped="ListView_SearchBar1_ItemTapped"  />
         <ListView x:Name="ListView_slice" IsPullToRefreshEnabled="True"  ItemTapped="ListView_slice_ItemTapped"  />
 
+
+        <ListView x:Name="lw_f101_dynamic"  >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid x:Name="Grid_f101_dynamic"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                    
+                            </Grid.ColumnDefinitions>
+
+                           
+                            <Label Grid.Column="0"   Text="{Binding col_2}" Rotation="-90"/>
+                            <microcharts:ChartView Grid.Column="1"   Chart="{Binding linechart}" />
+                            <Label Grid.Column="2"   Text="{Binding col_4}" Rotation="-90"/>
+                            <Label Grid.Column="3"   Text="{Binding col_5}" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+
+
+
         <Grid x:Name="Grid_f101_header">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*" />
@@ -62,8 +92,9 @@
             <Label Grid.Column="3"  Grid.Row="2" Text="итого" />
         </Grid>
         <ListView x:Name="lw" 
-                    ItemTapped="grid_item_tapped"
+                  ItemTapped="grid_item_tapped"
                   SelectionMode="None" 
+                  ItemAppearing="lw_ItemAppearing"
                   >
             <ListView.ItemTemplate>
                 <DataTemplate>

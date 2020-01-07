@@ -2,16 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App3.Views.Page12"
-             Title="Hacky Chart.js Report"
-             
-             >
-    
-    
-    <ContentPage.Content>
-        <WebView VerticalOptions="FillAndExpand">
-            <WebView.Source>
-                <HtmlWebViewSource Html="{Binding ReportHtml}" />
-            </WebView.Source>
+             Title="Hacky Chart.js Report">
+
+
+    <StackLayout  >
+        <Label  x:Name="L1" />
+
+        <WebView VerticalOptions="FillAndExpand"  x:Name="WebView1"  >
+            
         </WebView>
-    </ContentPage.Content>
+        </StackLayout>
 </ContentPage>

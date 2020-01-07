@@ -14,10 +14,11 @@ namespace App3.Views
     {
         public Page12()
         {
+            
             InitializeComponent();
             BuildReportHtml();
 
-            DisplayAlert("Уведомление", "sdf", "ОK");
+            
 
         }
 
@@ -32,7 +33,14 @@ namespace App3.Views
             var chartConfigScript = GetChartScript();
             var html = GetHtmlWithChartConfig(chartConfigScript);
             ReportHtml = html;
-            DisplayAlert("Уведомление", ReportHtml.ToString(), "ОK");
+
+            L1.Text = html;
+
+    
+            WebView1.Source = html;
+          
+
+
         }
 
         private string GetHtmlWithChartConfig(string chartConfig)

@@ -7,9 +7,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Entry = Microcharts.Entry;
+using Microcharts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SkiaSharp;
 
 namespace App3.Views
 {
@@ -18,6 +20,7 @@ namespace App3.Views
 	{
         Interface.IMyAPI myAPI = RestService.For<IMyAPI>("http://85.119.146.226/first/api");
         List<t_application_F101_allbanks> GetF101_data_List = new List<t_application_F101_allbanks>();
+        List<t_application_F101_allbanks> GetF101_data_List_chart = new List<t_application_F101_allbanks>();
         List<BankInfo> bankinfos = new List<BankInfo>();
 
         List<t_dates> datesList = new List<t_dates>();
@@ -42,6 +45,8 @@ namespace App3.Views
 
             Getregn_info("bankinfo", "anyvalue", regn_bank);
             F101_data(pln, ap, tip, regn_bank, dt_sl, dt_sl);
+
+            chart(pln, ap, tip, regn_bank, "2018-12-31", "2019-07-31");
 
             SearchBar1.IsVisible = false;
             ListView_SearchBar1.IsVisible = false;
@@ -118,7 +123,7 @@ namespace App3.Views
 
 
 
-        
+
         private void Clicked_getF101_data(object sender, EventArgs e)
         {
 
@@ -331,6 +336,154 @@ namespace App3.Views
             ((ListView)sender).SelectedItem = null;
         }
 
+
+             public class lw_f101_dynamic_template
+            {
+
+                public string IndCode { get; set; }
+
+                public float col_2 { get; set; }
+                public LineChart linechart { get; set; }
+                public float col_4 { get; set; }
+                public string col_5 { get; set; }
+
+            };
+
+
+        public async void chart (string pln, string ap, int tip, string str, string dt_from, string dt_to)
+        {
+            List<lw_f101_dynamic_template> lw_f101_dynamic_template_list = new List<lw_f101_dynamic_template>();
+
+
+
+            GetF101_data_List_chart.Clear();
+            GetF101_data_List_chart = await myAPI.GetF101_groups("group_to_Pln_Ap_IndCode" + pln + ap, tip, str, dt_from, dt_to);
+            GetF101_data_List_chart = GetF101_data_List_chart.OrderBy(order => order.dt).ToList();
+
+
+            List<t_application_F101_allbanks> L = GetF101_data_List_chart
+                                                      .GroupBy(a => a.dt)
+                                                      .Select(g=> new t_application_F101_allbanks
+                                                      {
+                                                          dt = g.First().dt,
+                                                          regn =g.First().regn,
+                                                          col_3 = g.Sum(c => c.col_3),
+                                                      })
+                                                      .ToList();
+       
+
+   
+
+
+
+
+
+            float prev_val = 0;
+                float first_val = L[0].col_3.Value;
+                string percent;
+                SKColor cl = SKColor.Empty;
+                var entries1 = new List<Microcharts.Entry>();
+
+                foreach (var p in L)
+                {
+
+
+                    if (p.col_3 >= prev_val) { cl = SKColor.Parse("#A8E10C"); } else { cl = SKColor.Parse("#FF5765"); }
+                    var entry = new Entry(p.col_3.Value)
+                    {
+                        //Label = p.Label,
+                        //ValueLabel = p.Val.ToString(),
+
+                        Color = cl,
+
+                    };
+                    prev_val = p.col_3.Value;
+                    entries1.Add(entry);
+                }
+
+
+
+                var chart1 = new LineChart()
+                {
+                    Entries = entries1,
+                    BackgroundColor = SKColor.Empty,
+                    PointMode = PointMode.None,
+                    LineMode = LineMode.Straight
+
+
+                };
+
+                if (first_val != 0)
+                { percent = Math.Round(prev_val * 100 / first_val - 100, 0).ToString() + "%"; }
+                else { percent = "0%"; };
+
+                lw_f101_dynamic_template_list.Add(new lw_f101_dynamic_template()
+                    {
+                        IndCode = str.ToString(),
+                        col_2 = first_val / 1000,
+                        linechart = chart1,
+                        col_4 = prev_val / 1000,
+                        col_5 = percent
+                    }
+                );
+            
+
+
+            lw_f101_dynamic.ItemsSource = lw_f101_dynamic_template_list;
+            lw_f101_dynamic.RowHeight = 200;
+
+
+
+
+
+            /*
+            await DisplayAlert( "Check",
+                str.ToString()+ "/" + 
+                (first_val / 1000).ToString()+ "/"+ 
+                (prev_val / 1000).ToString()
+
+                 
+                
+                , "OK"
+                );*/
+        }
+
+        public int lastItemIndex;
+        public int currentItemIndex;
+        private  void lw_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+         
+           t_application_F101_allbanks item = e.Item as t_application_F101_allbanks;
+            currentItemIndex = GetF101_data_List.IndexOf(item);
+            if (currentItemIndex > 20 & currentItemIndex < 200)
+            {
+
+
+                lw_f101_dynamic.HeightRequest = 200-currentItemIndex;
+            }
+            else if (currentItemIndex >= 200)
+            {
+
+
+                lw_f101_dynamic.HeightRequest = 0;
+            }
+
+
+            else
+            {
+                lw_f101_dynamic.HeightRequest = 200;
+            }
+            lastItemIndex = currentItemIndex;
+
+            
+
+            /*
+             DisplayAlert("Check",
+                currentItemIndex.ToString()+" "+ lastItemIndex.ToString() , "OK"
+                );*/
+
+
+        }
     }
     /*
         private async void scroll2_x(object sender, ScrolledEventArgs e)
