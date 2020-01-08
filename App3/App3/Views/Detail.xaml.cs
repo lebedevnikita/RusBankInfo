@@ -42,7 +42,7 @@ namespace App3.Views
                 {
                     Label = (DateTime.Parse(p.Label).AddMonths(-11)).ToString("MMM-yyyy"),
                     
-                //ValueLabel = p.Val.ToString(),
+                ValueLabel = p.Val.ToString(),
                 Color = cl,
                     
                 };

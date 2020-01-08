@@ -30,30 +30,33 @@
         <x:String >book_ap</x:String>
     </ContentPage.Title>
 
-    <StackLayout  >
+    <StackLayout x:Name ="SL" >
+        
         <SearchBar x:Name="SearchBar1" Placeholder="Наименование банка" TextChanged="SearchBar1_OnTextChanged"   ></SearchBar>
         <ListView x:Name="ListView_SearchBar1" IsPullToRefreshEnabled="True"  ItemTapped="ListView_SearchBar1_ItemTapped"  />
         <ListView x:Name="ListView_slice" IsPullToRefreshEnabled="True"  ItemTapped="ListView_slice_ItemTapped"  />
 
 
-        <ListView x:Name="lw_f101_dynamic"  >
-            <ListView.ItemTemplate>
-                <DataTemplate>
+        <ListView x:Name="lw_f101_dynamic" 
+                  o
+                  >
+            <ListView.ItemTemplate >
+                <DataTemplate >
                     <ViewCell >
-                        <Grid x:Name="Grid_f101_dynamic"  >
+                        <Grid x:Name="Grid_f101_dynamic"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="4*" />
-                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="11*" />
+                                <ColumnDefinition Width="Auto" />
+
                     
                             </Grid.ColumnDefinitions>
-
-                           
-                            <Label Grid.Column="0"   Text="{Binding col_2}" Rotation="-90"/>
-                            <microcharts:ChartView Grid.Column="1"   Chart="{Binding linechart}" />
-                            <Label Grid.Column="2"   Text="{Binding col_4}" Rotation="-90"/>
-                            <Label Grid.Column="3"   Text="{Binding col_5}" />
+                            <Label Grid.Column="0"  LineBreakMode="NoWrap" Text="{Binding col_2}"  Rotation="-90" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Micro"/>
+                            <microcharts:ChartView Grid.Column="1"   Chart="{Binding chart1}"  />
+                            <Label Grid.Column="2"  LineBreakMode="NoWrap" Text="{Binding col_4}" Rotation="-90" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"  FontSize="Micro" />
+                            
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
@@ -71,9 +74,9 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20"  />
-                <RowDefinition Height="20"  />
-                <RowDefinition Height="20" />
+                <RowDefinition Height="*"  />
+                <RowDefinition Height="*"  />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label  x:Name="Label2_bankname" Grid.Column="0"  Grid.Row="0"   Grid.ColumnSpan="3">
                 <Label.GestureRecognizers>
@@ -91,10 +94,12 @@
             <Label Grid.Column="2"  Grid.Row="2" Text="ин. вал., драг. металлы" />
             <Label Grid.Column="3"  Grid.Row="2" Text="итого" />
         </Grid>
+        
         <ListView x:Name="lw" 
                   ItemTapped="grid_item_tapped"
                   SelectionMode="None" 
                   ItemAppearing="lw_ItemAppearing"
+                  
                   >
             <ListView.ItemTemplate>
                 <DataTemplate>

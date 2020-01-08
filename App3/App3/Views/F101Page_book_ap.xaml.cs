@@ -343,9 +343,11 @@ namespace App3.Views
                 public string IndCode { get; set; }
 
                 public float col_2 { get; set; }
-                public LineChart linechart { get; set; }
-                public float col_4 { get; set; }
-                public string col_5 { get; set; }
+                public Chart chart1 { get; set; }
+                public string col_4 { get; set; }
+             
+
+
 
             };
 
@@ -378,59 +380,76 @@ namespace App3.Views
 
 
 
-            float prev_val = 0;
+              
                 float first_val = L[0].col_3.Value;
+            float prev_val = 0;
                 string percent;
                 SKColor cl = SKColor.Empty;
                 var entries1 = new List<Microcharts.Entry>();
 
-                foreach (var p in L)
+
+            foreach (var p in L)
                 {
 
 
-                    if (p.col_3 >= prev_val) { cl = SKColor.Parse("#A8E10C"); } else { cl = SKColor.Parse("#FF5765"); }
-                    var entry = new Entry(p.col_3.Value)
+                    if (p.col_3 >= prev_val) { cl = SKColor.Parse("#00d9fe"); } else { cl = SKColor.Parse("#00d9fe"); }
+                    var entry_chart1 = new Entry(p.col_3.Value)
                     {
                         //Label = p.Label,
-                        //ValueLabel = p.Val.ToString(),
-
+                       // ValueLabel = p.col_3.ToString(),
+                        Label = (DateTime.Parse(p.dt)).ToString("MM.yy"),
                         Color = cl,
+                        
 
                     };
+                  
+                    entries1.Add(entry_chart1);
+               
                     prev_val = p.col_3.Value;
-                    entries1.Add(entry);
-                }
 
 
 
-                var chart1 = new LineChart()
+               
+
+            }
+
+
+
+                var chart1 = new BarChart()
                 {
                     Entries = entries1,
                     BackgroundColor = SKColor.Empty,
-                    PointMode = PointMode.None,
-                    LineMode = LineMode.Straight
-
-
+                    PointMode = PointMode.None
+                  
+                    
+                    
                 };
 
-                if (first_val != 0)
+ 
+
+
+            
+
+
+
+            if (first_val != 0)
                 { percent = Math.Round(prev_val * 100 / first_val - 100, 0).ToString() + "%"; }
                 else { percent = "0%"; };
 
                 lw_f101_dynamic_template_list.Add(new lw_f101_dynamic_template()
                     {
                         IndCode = str.ToString(),
-                        col_2 = first_val / 1000,
-                        linechart = chart1,
-                        col_4 = prev_val / 1000,
-                        col_5 = percent
-                    }
+                        col_2 = (float)Math.Round(first_val /1000000,0),
+                        chart1 = chart1,
+                        col_4 = Math.Round(prev_val / 1000000, 0).ToString() +" ("+ percent.ToString()+")"
+       
+                }   
                 );
             
 
 
             lw_f101_dynamic.ItemsSource = lw_f101_dynamic_template_list;
-            lw_f101_dynamic.RowHeight = 200;
+            lw_f101_dynamic.RowHeight = (int)Math.Round(lw_f101_dynamic.Height,0);
 
 
 
@@ -449,38 +468,62 @@ namespace App3.Views
         }
 
         public int lastItemIndex;
-        public int currentItemIndex;
+        public double currentItemIndex;
+        public double prevItemIndex =0;
+        public bool scroll_UP;
+
         private  void lw_ItemAppearing(object sender, ItemVisibilityEventArgs e)
         {
-         
-           t_application_F101_allbanks item = e.Item as t_application_F101_allbanks;
+
+
+
+
+
+
+
+            t_application_F101_allbanks item = e.Item as t_application_F101_allbanks;
             currentItemIndex = GetF101_data_List.IndexOf(item);
-            if (currentItemIndex > 20 & currentItemIndex < 200)
+
+
+
+
+
+            if (currentItemIndex > prevItemIndex)
             {
-
-
-                lw_f101_dynamic.HeightRequest = 200-currentItemIndex;
+                scroll_UP = true;
             }
-            else if (currentItemIndex >= 200)
-            {
-
-
-                lw_f101_dynamic.HeightRequest = 0;
-            }
-
-
             else
             {
-                lw_f101_dynamic.HeightRequest = 200;
+                scroll_UP = false;
             }
-            lastItemIndex = currentItemIndex;
+
+
+
+
+
+
+
+            if (currentItemIndex > 20  & scroll_UP == true)
+            {
+                lw_f101_dynamic.HeightRequest = Math.Max(0, 400 - Math.Round(Math.Pow(currentItemIndex-20,1.9),0));
+            }
+
+     
+            else if (currentItemIndex ==0 )
+            {
+
+
+                lw_f101_dynamic.HeightRequest = 400;
+            }
 
             
+            /*DisplayAlert("Check",
+                          Math.Round(Math.Pow(currentItemIndex, 1.8), 0).ToString() , "OK"
+                           );*/
 
-            /*
-             DisplayAlert("Check",
-                currentItemIndex.ToString()+" "+ lastItemIndex.ToString() , "OK"
-                );*/
+            prevItemIndex = currentItemIndex;
+            
+            
 
 
         }
