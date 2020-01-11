@@ -13,11 +13,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
-
-  
-
-
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="slice"   Order="Primary" Priority="1"  Clicked="Tbi_slice" ></ToolbarItem>
         <ToolbarItem ClassId="Item1"  Text="Входящие остатки"  Order="Secondary" Priority="1"  Clicked="Clicked_getF101_data" ></ToolbarItem>
@@ -30,42 +25,67 @@
         <x:String >book_ap</x:String>
     </ContentPage.Title>
 
-    <StackLayout x:Name ="SL" >
-        
+    <StackLayout x:Name ="SL"  >
+
         <SearchBar x:Name="SearchBar1" Placeholder="Наименование банка" TextChanged="SearchBar1_OnTextChanged"   ></SearchBar>
         <ListView x:Name="ListView_SearchBar1" IsPullToRefreshEnabled="True"  ItemTapped="ListView_SearchBar1_ItemTapped"  />
         <ListView x:Name="ListView_slice" IsPullToRefreshEnabled="True"  ItemTapped="ListView_slice_ItemTapped"  />
 
+        <Grid x:Name="Grid_f101_header0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
 
-        <ListView x:Name="lw_f101_dynamic" 
-                  o
-                  >
-            <ListView.ItemTemplate >
-                <DataTemplate >
-                    <ViewCell >
-                        <Grid x:Name="Grid_f101_dynamic"
-                                VerticalOptions="FillAndExpand"
-                                HorizontalOptions="FillAndExpand">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="11*" />
-                                <ColumnDefinition Width="Auto" />
-
-                    
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"  LineBreakMode="NoWrap" Text="{Binding col_2}"  Rotation="-90" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Micro"/>
-                            <microcharts:ChartView Grid.Column="1"   Chart="{Binding chart1}"  />
-                            <Label Grid.Column="2"  LineBreakMode="NoWrap" Text="{Binding col_4}" Rotation="-90" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"  FontSize="Micro" />
-                            
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"  />
+                <RowDefinition Height="Auto"  />
+            </Grid.RowDefinitions>
+            <Label  x:Name="Label2_bankname" Grid.Column="0"  Grid.Row="0" HorizontalOptions="Start" FontSize="Small" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="search_tap"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label  Text="Динамика" Grid.Column="1" Grid.Row="0" HorizontalOptions="End" FontSize="Small" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="lb_dynamic_clicked"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="Label1_tip" Grid.Column="0"  Grid.Row="1"   Grid.ColumnSpan="2" FontSize="Small"/>
+        </Grid>
 
 
 
 
+        <CarouselView  x:Name="cv_f101_dynamic">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="*"  />
+                            <ColumnDefinition Width="*" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"  x:Name="cv_r1" />
+                            <RowDefinition Height="3*" x:Name="cv_r2" />
+                        </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0"   Text="{Binding col_2}"  VerticalOptions="CenterAndExpand" HorizontalOptions="Start"  FontSize="Micro" />
+                            <Label Grid.Row="0" Grid.Column="1"  Text="{Binding col_4}"  VerticalOptions="CenterAndExpand" HorizontalOptions="End"  FontSize="Micro" />
+                            <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart1}"  />
+                            <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart2}"  />
+
+                    </Grid>
+                                   
+                    </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+      
+        
+        
+        
+        
+        
         <Grid x:Name="Grid_f101_header">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*" />
@@ -74,26 +94,18 @@
                 <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"  />
-                <RowDefinition Height="*"  />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"  />
             </Grid.RowDefinitions>
-            <Label  x:Name="Label2_bankname" Grid.Column="0"  Grid.Row="0"   Grid.ColumnSpan="3">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="search_tap"  />
-                </Label.GestureRecognizers>
-            </Label>
-            <Label  Text="Динамика" Grid.Column="3" Grid.Row="0">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="lb_dynamic_clicked"  />
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="Label1_tip" Grid.Column="0"  Grid.Row="1"   Grid.ColumnSpan="2" />
-            <Label Grid.Column="0"  Grid.Row="2" Text="Номер счета"  />
-            <Label Grid.Column="1"  Grid.Row="2" Text="в рублях" />
-            <Label Grid.Column="2"  Grid.Row="2" Text="ин. вал., драг. металлы" />
-            <Label Grid.Column="3"  Grid.Row="2" Text="итого" />
+          
+            
+            <Label Grid.Column="0"  Grid.Row="0" Text="Номер счета"  />
+            <Label Grid.Column="1"  Grid.Row="0" Text="в рублях" />
+            <Label Grid.Column="2"  Grid.Row="0" Text="ин. вал., драг. металлы" />
+            <Label Grid.Column="3"  Grid.Row="0" Text="итого" />
         </Grid>
+        
+        
+        
         
         <ListView x:Name="lw" 
                   ItemTapped="grid_item_tapped"
@@ -112,9 +124,9 @@
                                 <ColumnDefinition Width="4*"   />
                             </Grid.ColumnDefinitions>
                             <Label x:Name="col1" Grid.Column="0"   Text="{Binding IndCode}"   />
-                            <Label x:Name="col2" Grid.Column="1"   Text="{Binding col_1, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"/>
-                            <Label x:Name="col3" Grid.Column="2"   Text="{Binding col_2, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"/>
-                            <Label x:Name="col4" Grid.Column="3"   Text="{Binding col_3, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"/>
+                            <Label x:Name="col2" Grid.Column="1"   Text="{Binding col_1, Converter={StaticResource converter_numbers},ConverterParameter='1000'}"/>
+                            <Label x:Name="col3" Grid.Column="2"   Text="{Binding col_2, Converter={StaticResource converter_numbers},ConverterParameter='1000'}"/>
+                            <Label x:Name="col4" Grid.Column="3"   Text="{Binding col_3, Converter={StaticResource converter_numbers},ConverterParameter='1000'}"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
