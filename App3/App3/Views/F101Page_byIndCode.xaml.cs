@@ -7,9 +7,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Entry = Microcharts.Entry;
+using Microcharts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SkiaSharp;
+using App3.CS;
 
 namespace App3.Views
 {
@@ -34,7 +37,7 @@ namespace App3.Views
         {
 
             InitializeComponent();
-            DisplayAlert("Уведомление", _filtered_bankname, "ОK");
+           // DisplayAlert("Уведомление", _filtered_bankname, "ОK");
             Get_dates();
             tip = _tip;
             indCode = _indCode;
@@ -43,6 +46,13 @@ namespace App3.Views
 
 
             F101_data(tip, indCode, dt_sl, dt_sl, filtered_bankname);
+
+
+            if (tip == 4) { chart( tip, indCode, (DateTime.Parse(dt_sl).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_sl, filtered_bankname); }
+            else { chart( tip, indCode, (DateTime.Parse(dt_sl).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_sl, filtered_bankname); }
+
+
+
 
             SearchBar1.IsVisible = false;
             ListView_SearchBar1.IsVisible = false;
@@ -119,7 +129,7 @@ namespace App3.Views
                 lw.ItemsSource = GetF101_data_List_search_bar_filterd;
             }
             else {
-                lw.ItemsSource = GetF101_data_List;
+                lw.ItemsSource = GetF101_data_List.Where(x => x.regn!="0");
             }
  
 
@@ -161,9 +171,13 @@ namespace App3.Views
             
             F101_data(tip, indCode, dt_slice, dt_slice, filtered_bankname);
             Header_fieds_change(Label1_tip, "Name_Part", item.Text);
-           
+
+            if (tip == 4) { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
+            else { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
+
+
         }
-      
+
 
         private void search_tap(object sender, EventArgs e)
         {
@@ -213,6 +227,8 @@ namespace App3.Views
             }
 
             Header_fieds_change(Label2_bankname, "Name_Part", b.ShortName);
+            if (tip == 4) { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_slice, b.ShortName); }
+            else { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_slice, b.ShortName); }
 
 
 
@@ -315,9 +331,8 @@ namespace App3.Views
 
 
             F101_data(tip, indCode, dt_slice, dt_slice, filtered_bankname);
-
-
-
+            if (tip == 4) { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
+            else { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
 
         }
 
@@ -349,21 +364,71 @@ namespace App3.Views
 
         public async void grid_item_tapped(object sender, ItemTappedEventArgs e)
         {
-            ((ListView)sender).SelectedItem = null;
+           ((ListView)sender).SelectedItem = null;
+
+
+            
+
         }
+
+
+
+
+
+
+        public class cv_f101_dynamic_template
+        {
+
+            public string IndCode { get; set; }
+
+
+            public Chart chart1 { get; set; }
+            public string col_4 { get; set; }
+            public Chart chart2 { get; set; }
+            public Chart chart3 { get; set; }
+
+
+
+        };
+
+
+
+
+        public double div(double a, double b)
+        {
+
+            if (b != 0) { return a / b; }
+            else { return 1; }
+        }
+
+
+
+
+
+        List<t_application_F101_allbanks> GetF101_data_List_chart = new List<t_application_F101_allbanks>();
+
+
+
+        public async void chart( int tip, string indCode, string dt_from, string dt_to, string filtered_bankname)
+        {
+            
+            GetF101_data_List_chart.Clear();
+            GetF101_data_List_chart = await myAPI.GetF101_data("IndCode", tip, indCode, dt_from, dt_to);
+            GetF101_data_List_chart = GetF101_data_List_chart.Where(x => x.regn == filtered_bankname)
+                                                             .OrderBy(order => order.col_3).Reverse()
+                                                             .ToList();
+
+            Graf gr = new Graf();
+            gr.Charts(GetF101_data_List_chart, tip, dt_from, dt_to);
+            cv_f101_dynamic.ItemsSource = gr.cv_f101_dynamic_template_list;
+
+        }
+
+
+
 
     }
-    /*
-        private async void scroll2_x(object sender, ScrolledEventArgs e)
-        {
-           await grid1.ScrollToAsync(e.ScrollX, grid2.ScrollY, false);
-            GetF101();
-        }
-
-        private async void scroll1_x(object sender, ScrolledEventArgs e)
-        {
-            await grid1.ScrollToAsync(grid2.ScrollX, grid2.ScrollY, false);
-        }*/
+    
 
 
 }

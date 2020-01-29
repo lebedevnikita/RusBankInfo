@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App3.Views.F101Page_byIndCode"
              xmlns:converters ="clr-namespace:App3.CS"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
             >
     <ContentPage.Resources>
 
@@ -69,6 +70,35 @@
             <Label Grid.Column="2"  Grid.Row="2" Text="ин. вал., драг. металлы" />
             <Label Grid.Column="3"  Grid.Row="2" Text="итого" />
         </Grid>
+
+
+
+        <CarouselView  x:Name="cv_f101_dynamic">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="*"  />
+                            <ColumnDefinition Width="*" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"  x:Name="cv_r1" />
+                            <RowDefinition Height="3*" x:Name="cv_r2" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0"   Text="{Binding col_2}"  VerticalOptions="CenterAndExpand" HorizontalOptions="Start"  FontSize="Micro" />
+                        <Label Grid.Row="0" Grid.Column="1"  Text="{Binding col_4}"  VerticalOptions="CenterAndExpand" HorizontalOptions="End"  FontSize="Micro" />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart1}"  />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart2}"  />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart3}"  />
+
+                    </Grid>
+
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+
         <ListView x:Name="lw" 
                   ItemTapped="grid_item_tapped"
                   SelectionMode="None" >

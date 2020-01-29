@@ -74,6 +74,7 @@
                             <Label Grid.Row="0" Grid.Column="1"  Text="{Binding col_4}"  VerticalOptions="CenterAndExpand" HorizontalOptions="End"  FontSize="Micro" />
                             <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart1}"  />
                             <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart2}"  />
+                            <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart3}"  />
 
                     </Grid>
                                    
