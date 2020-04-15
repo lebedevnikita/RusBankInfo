@@ -17,7 +17,7 @@ using App3.CS;
 namespace App3.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class F102Page : ContentPage
+    public partial class F1022Page : ContentPage
     {
         Interface.IMyAPI myAPI = RestService.For<IMyAPI>("http://85.119.146.226/first/api");
         List<Dataset_F102> GetF102_data_List = new List<Dataset_F102>();

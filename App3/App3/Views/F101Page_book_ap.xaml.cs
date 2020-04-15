@@ -54,9 +54,22 @@ namespace App3.Views
             SearchBar1.IsVisible = false;
             ListView_SearchBar1.IsVisible = false;
             ListView_slice.IsVisible = false;
-            Header_fieds_change(Label1_tip, "Name_Part", "Исходящие остатки");
+
             _pln = pln;
             _ap = ap;
+
+            if (ap == "1")
+            { ap= "Активы"; }
+            else
+            if (ap == "2")
+            { ap = "Пассивы"; }
+            else
+            { ap = "-"; }
+
+
+
+            Header_fieds_change(Label1_tip, "Name_Part", "Исходящие остатки тыс.р. |" + " Книга "+ pln + ": " + ap );
+    
 
         }
 
@@ -161,7 +174,16 @@ namespace App3.Views
             if (tip == 4) { chart(_pln, _ap, tip, str, (DateTime.Parse(dt_slice).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_slice); }
             else { chart(_pln, _ap, tip, str, (DateTime.Parse(dt_slice).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_slice); }
 
-            Header_fieds_change(Label1_tip, "Name_Part", item.Text);
+
+            string _app;
+            if (_ap == "1")
+            { _app = "Активы"; }
+            else
+            if (_ap == "2")
+            { _app = "Пассивы"; }
+            else
+            { _app = "-"; }
+            Header_fieds_change(Label1_tip, "Name_Part", item.Text +" тыс.р. |" + " Книга " + _pln + ": " + _app);
 
            
         }
@@ -379,10 +401,6 @@ namespace App3.Views
         public double prevItemIndex =0;
         public bool scroll_UP;
 
-
-
-        
-   
         private  void lw_ItemAppearing(object sender, ItemVisibilityEventArgs e)
         {
 

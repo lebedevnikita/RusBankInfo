@@ -362,12 +362,45 @@ namespace App3.Views
         }
 
 
-        public async void grid_item_tapped(object sender, ItemTappedEventArgs e)
+        public  void grid_item_tapped(object sender, ItemTappedEventArgs e)
         {
-           ((ListView)sender).SelectedItem = null;
+            t_application_F101_allbanks selectedRow = e.Item as t_application_F101_allbanks;
+           // if (selectedRow != null)
+
+               // await App.MasterDetail.Detail.Navigation.PushAsync(new F101Page_byIndCode(tip, selectedRow.IndCode.ToString(), datesList.First().dt, selectedRow.regn));
+
+            SearchBar1.IsVisible = false;
+            ListView_SearchBar1.IsVisible = false;
+            Grid_f101_header.IsVisible = true;
+            lw.IsVisible = true;
+
+           
+            filtered_bankname = selectedRow.regn;
+
+            if (filtered_bankname != "0" & filtered_bankname != "БАНКОВСКАЯ СИСТЕМА РФ")
+            {
+                //DisplayAlert("Уведомление", filtered_bankname, "ОK");
+                GetF101_data_List_search_bar_filterd = GetF101_data_List.Where(x => x.regn == filtered_bankname).ToList();
+                lw.ItemsSource = GetF101_data_List_search_bar_filterd;
+            }
+            else
+            {
+                lw.ItemsSource = GetF101_data_List;
+            }
+
+             Header_fieds_change(Label2_bankname, "Name_Part", filtered_bankname);
+            if (tip == 4) { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-12)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
+            else { chart(tip, indCode, (DateTime.Parse(dt_slice).AddMonths(-11)).ToString("yyyy-MM-dd"), dt_slice, filtered_bankname); }
 
 
-            
+
+
+
+
+
+
+
+
 
         }
 
@@ -425,7 +458,53 @@ namespace App3.Views
         }
 
 
+        public double currentItemIndex;
+        public double prevItemIndex = 0;
+        public bool scroll_UP;
 
+        private void lw_ItemAppearing(object sender, ItemVisibilityEventArgs e)
+        {
+
+            t_application_F101_allbanks item = e.Item as t_application_F101_allbanks;
+            currentItemIndex = GetF101_data_List.IndexOf(item);
+
+            if (currentItemIndex > prevItemIndex)
+            {
+                scroll_UP = true;
+            }
+            else
+            {
+                scroll_UP = false;
+            }
+
+            if (currentItemIndex > 20 & scroll_UP == true)
+            {
+
+                cv_f101_dynamic.IsVisible = false;
+
+            }
+
+            else if (currentItemIndex == 0)
+            {
+
+                cv_f101_dynamic.IsVisible = true;
+
+
+
+            }
+
+
+            /*DisplayAlert("Check",
+                          Math.Round(Math.Pow(currentItemIndex, 1.8), 0).ToString() , "OK"
+                           );*/
+
+            prevItemIndex = currentItemIndex;
+
+
+
+
+
+        }
 
     }
     

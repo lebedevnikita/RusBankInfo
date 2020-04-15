@@ -106,7 +106,10 @@ namespace App3.Interface
         Task<List<t_dates>> t_dates(string obj);
 
 
- 
+        /*102f*/
+        [Get("/F102/data/{slice}/{field_id}/{regn}/{dt_from}/{dt_to}")]
+        Task<List<Dataset_F102>> GetF102_data(string slice, int field_id, string regn, string dt_from, string dt_to);
+        
 
 
     }

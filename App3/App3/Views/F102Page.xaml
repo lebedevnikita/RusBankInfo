@@ -2,14 +2,153 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App3.Views.F102Page"
-              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
-             >
+             xmlns:converters ="clr-namespace:App3.CS"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+              
+            >
+    <ContentPage.Resources>
 
-    <StackLayout>
-    <DatePicker Format="M">
-        <DatePicker.MinimumDate>6/01/2016</DatePicker.MinimumDate>
-        <DatePicker.MaximumDate>6/30/2016</DatePicker.MaximumDate>
-            </DatePicker>
+
+
+        <ResourceDictionary x:Name="ResDic">
+            <StyleSheet Source="/appStyles.css" />
+            <converters:converter_numbers x:Key="converter_numbers"/>
+            <Style x:Key="field1" TargetType="Label">
+                <Setter Property="BackgroundColor" Value="#eee"/>
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="10" />
+            </Style>
+
+            <x:String x:Key="page_slice">24</x:String>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="date_slice"   Order="Primary" Priority="1"  Clicked="Tbi_slice" ></ToolbarItem>
+        <ToolbarItem ClassId="Item1"  Text="Входящие остатки"  Order="Secondary" Priority="1"  Clicked="Clicked_getF102_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item2"  Text="Обороты по дебету" Order="Secondary" Priority="2"  Clicked="Clicked_getF102_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item3"  Text="Обороты по кредиту" Order="Secondary" Priority="3" Clicked="Clicked_getF102_data" ></ToolbarItem>
+        <ToolbarItem ClassId="Item4"  Text="Исходящие остатки" Order="Secondary" Priority="4"  Clicked="Clicked_getF102_data" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+
+
+
+ 
+        
+        
+
+    <ContentPage.Title  >
+        <x:String >F102Page_byIndCode</x:String>
+      
+    </ContentPage.Title>
+
+    <StackLayout  >
+        <SearchBar x:Name="SearchBar1" Placeholder="Наименование банка" TextChanged="SearchBar1_OnTextChanged"   ></SearchBar>
+        <ListView x:Name="ListView_SearchBar1" IsPullToRefreshEnabled="True"  ItemTapped="ListView_SearchBar1_ItemTapped"  />
+        <ListView x:Name="ListView_slice" IsPullToRefreshEnabled="True"  ItemTapped="ListView_slice_ItemTapped"  />
+
+        <Grid x:Name="Grid_f102_header0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"  />
+                <RowDefinition Height="Auto"  />
+            </Grid.RowDefinitions>
+            <Label  x:Name="Label2_bankname" Grid.Column="0"  Grid.Row="0" HorizontalOptions="Start" FontSize="Small" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="search_tap"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label  Text="Динамика" Grid.Column="1" Grid.Row="0" HorizontalOptions="End" FontSize="Small" >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="lb_dynamic_clicked"  />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="Label1_tip" Grid.Column="0"  Grid.Row="1"   Grid.ColumnSpan="2" FontSize="Small"/>
+        </Grid>
+
+
+
+        <CarouselView  x:Name="cv_f102_dynamic">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="*"  />
+                            <ColumnDefinition Width="*" />
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"  x:Name="cv_r1" />
+                            <RowDefinition Height="3*" x:Name="cv_r2" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0"   Text="{Binding col_2}"  VerticalOptions="CenterAndExpand" HorizontalOptions="Start"  FontSize="Micro" />
+                        <Label Grid.Row="0" Grid.Column="1"  Text="{Binding col_4}"  VerticalOptions="CenterAndExpand" HorizontalOptions="End"  FontSize="Micro" />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart1}"  />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart2}"  />
+                        <microcharts:ChartView Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="2" Chart="{Binding chart3}"  />
+
+                    </Grid>
+
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+
+        <Grid x:Name="Grid_f102_header">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4*" />
+
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"  />
+            </Grid.RowDefinitions>
+
+
+            <Label Grid.Column="0"  Grid.Row="0" Text="Название" Grid.ColumnSpan="3"  />
+            <Label Grid.Column="3"  Grid.Row="0" Text="значение" />
+
+        </Grid>
+
+        <ListView x:Name="lw" 
+                  ItemTapped="grid_item_tapped"
+                  SelectionMode="None" 
+                  ItemAppearing="lw_ItemAppearing">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell >
+                        <Grid x:Name="Grid_f102"  >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="0" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"  />
+                            </Grid.RowDefinitions>
+                            <Label x:Name="col1" Grid.Column="0"   Text="{Binding FieldName}" Grid.ColumnSpan="3" />
+                            <Label x:Name="col2" Grid.Column="3"   Text="{Binding val, Converter={StaticResource converter_numbers},ConverterParameter='1000', StringFormat='{0:#,0}'}"        />
+                            <Label x:Name="col3" Grid.Column="4"    Text="{Binding Field_id}"  />
+
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </StackLayout>
 </ContentPage>
+
 

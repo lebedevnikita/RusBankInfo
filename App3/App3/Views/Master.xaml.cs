@@ -48,7 +48,11 @@ namespace App3.Views
             {
 
                 App.MasterDetail.IsPresented = false;
-                await App.MasterDetail.Detail.Navigation.PushAsync(new F102Page());
+                List<t_dates> datesList = new List<t_dates>();
+                List<string> DL = new List<string>();
+
+                datesList = await myAPI.t_dates("t_Data102");
+                await App.MasterDetail.Detail.Navigation.PushAsync(new F102Page("Part",-1,"0", datesList.First().dt, "0"));
             };
 
             bt_search.Clicked += async (sender, e) =>

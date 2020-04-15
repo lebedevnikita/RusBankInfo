@@ -9,17 +9,17 @@ namespace App3.CS
     public class converter_ap : IValueConverter
     {
 
-
+        public string val { get; set; }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 
          
             if (value.ToString() == "1")
-            { return "Актив"; }
+            { return "Активы"; }
             else 
             if (value.ToString() == "2")
-            { return "Пассив"; }
+            { return "Пассивы"; }
             else 
             { return "-"; }
 
@@ -29,6 +29,11 @@ namespace App3.CS
 
             //throw new NotImplementedException();
         }
+
+
+
+
+
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
